@@ -14,9 +14,10 @@ interface CardModelProps {
   mouseX: number;
   mouseY: number;
   isHovering: boolean;
+  flipped: boolean;
 }
 
-function CardModel({ mouseX, mouseY, isHovering }: CardModelProps) {
+function CardModel({ mouseX, mouseY, isHovering, flipped }: CardModelProps) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF("/assets/sorare/card.gltf");
   const targetRotation = useRef({ x: 0, y: 0 });
@@ -33,17 +34,17 @@ function CardModel({ mouseX, mouseY, isHovering }: CardModelProps) {
     });
   }, [scene]);
 
-  // Update target rotation from mouse
+  // Update target rotation from mouse + flip state
   useEffect(() => {
+    const flipBase = flipped ? Math.PI : 0;
     if (isHovering) {
-      // Map mouse position to rotation: +-25 degrees
-      targetRotation.current.y = mouseX * 25 * (Math.PI / 180);
+      targetRotation.current.y = flipBase + mouseX * 25 * (Math.PI / 180);
       targetRotation.current.x = -mouseY * 15 * (Math.PI / 180);
     } else {
+      targetRotation.current.y = flipBase;
       targetRotation.current.x = 0;
-      targetRotation.current.y = 0;
     }
-  }, [mouseX, mouseY, isHovering]);
+  }, [mouseX, mouseY, isHovering, flipped]);
 
   useFrame(() => {
     if (!groupRef.current) return;
@@ -126,7 +127,7 @@ function SceneLighting() {
 function CameraSetup() {
   const { camera } = useThree();
   useEffect(() => {
-    camera.position.set(0, 0, 0.38);
+    camera.position.set(0, 0, 0.22);
     camera.lookAt(0, 0, 0);
   }, [camera]);
   return null;
@@ -143,6 +144,7 @@ export default function SorareCard3D({ width = 340, height = 550 }: SorareCard3D
   const containerRef = useRef<HTMLDivElement>(null);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [flipped, setFlipped] = useState(false);
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -157,6 +159,8 @@ export default function SorareCard3D({ width = 340, height = 550 }: SorareCard3D
     setMouse({ x: 0, y: 0 });
   }, []);
 
+  const handleClick = useCallback(() => setFlipped((f) => !f), []);
+
   return (
     <div
       ref={containerRef}
@@ -165,6 +169,7 @@ export default function SorareCard3D({ width = 340, height = 550 }: SorareCard3D
       onPointerMove={handlePointerMove}
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
+      onClick={handleClick}
     >
       <Canvas
         gl={{
@@ -178,8 +183,14 @@ export default function SorareCard3D({ width = 340, height = 550 }: SorareCard3D
         <CameraSetup />
         <SceneLighting />
         <Environment preset="studio" />
-        <CardModel mouseX={mouse.x} mouseY={mouse.y} isHovering={isHovering} />
+        <CardModel mouseX={mouse.x} mouseY={mouse.y} isHovering={isHovering} flipped={flipped} />
       </Canvas>
+      {/* Flip hint */}
+      <div className="absolute bottom-3 left-0 right-0 flex justify-center pointer-events-none">
+        <span className="text-[11px] text-white/40 tracking-wide">
+          Click to flip
+        </span>
+      </div>
     </div>
   );
 }
