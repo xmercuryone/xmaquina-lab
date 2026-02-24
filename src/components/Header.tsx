@@ -16,6 +16,7 @@ interface NavLink {
 
 const NAV_LINKS: NavLink[] = [
   { name: "Crates", url: "/", id: "crates", internal: true },
+  { name: "Apollo", url: "#/apollo", id: "apollo", internal: true },
   { name: "Review", url: "#/review", id: "review", internal: true },
   { name: "Cards", url: "https://xmaquina-nft.netlify.app", id: "cards" },
   { name: "Docs", url: "https://xmaquina.gitbook.io/xmaquina", id: "docs" },
