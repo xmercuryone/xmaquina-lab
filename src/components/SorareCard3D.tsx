@@ -11,16 +11,13 @@ function lerp(a: number, b: number, t: number) {
 /* ── Card Model (loaded from GLTF) ── */
 
 interface CardModelProps {
-  mouseX: number;
-  mouseY: number;
-  isHovering: boolean;
-  flipped: boolean;
+  rotationX: number;
+  rotationY: number;
 }
 
-function CardModel({ mouseX, mouseY, isHovering, flipped }: CardModelProps) {
+function CardModel({ rotationX, rotationY }: CardModelProps) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF("/assets/sorare/card.gltf");
-  const targetRotation = useRef({ x: 0, y: 0 });
   const currentRotation = useRef({ x: 0, y: 0 });
 
   // Enhance materials for PBR reflections
@@ -34,23 +31,10 @@ function CardModel({ mouseX, mouseY, isHovering, flipped }: CardModelProps) {
     });
   }, [scene]);
 
-  // Update target rotation from mouse + flip state
-  useEffect(() => {
-    const flipBase = flipped ? Math.PI : 0;
-    if (isHovering) {
-      targetRotation.current.y = flipBase + mouseX * 25 * (Math.PI / 180);
-      targetRotation.current.x = -mouseY * 15 * (Math.PI / 180);
-    } else {
-      targetRotation.current.y = flipBase;
-      targetRotation.current.x = 0;
-    }
-  }, [mouseX, mouseY, isHovering, flipped]);
-
   useFrame(() => {
     if (!groupRef.current) return;
-    const speed = isHovering ? 0.08 : 0.04;
-    currentRotation.current.x = lerp(currentRotation.current.x, targetRotation.current.x, speed);
-    currentRotation.current.y = lerp(currentRotation.current.y, targetRotation.current.y, speed);
+    currentRotation.current.x = lerp(currentRotation.current.x, rotationX, 0.12);
+    currentRotation.current.y = lerp(currentRotation.current.y, rotationY, 0.12);
     groupRef.current.rotation.x = currentRotation.current.x;
     groupRef.current.rotation.y = currentRotation.current.y;
   });
@@ -142,34 +126,43 @@ interface SorareCard3DProps {
 
 export default function SorareCard3D({ width = 340, height = 550 }: SorareCard3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-  const [flipped, setFlipped] = useState(false);
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const isDragging = useRef(false);
+  const lastPointer = useRef({ x: 0, y: 0 });
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    isDragging.current = true;
+    lastPointer.current = { x: e.clientX, y: e.clientY };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }, []);
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1; // -1 to 1
-    const y = ((e.clientY - rect.top) / rect.height) * 2 - 1; // -1 to 1
-    setMouse({ x, y });
+    if (!isDragging.current) return;
+    const dx = e.clientX - lastPointer.current.x;
+    const dy = e.clientY - lastPointer.current.y;
+    lastPointer.current = { x: e.clientX, y: e.clientY };
+
+    // Map pixel drag to radians — sensitivity tuned for natural feel
+    const sensitivity = 0.006;
+    setRotation((prev) => ({
+      x: prev.x + dy * sensitivity,
+      y: prev.y + dx * sensitivity,
+    }));
   }, []);
 
-  const handlePointerEnter = useCallback(() => setIsHovering(true), []);
-  const handlePointerLeave = useCallback(() => {
-    setIsHovering(false);
-    setMouse({ x: 0, y: 0 });
+  const handlePointerUp = useCallback(() => {
+    isDragging.current = false;
   }, []);
-
-  const handleClick = useCallback(() => setFlipped((f) => !f), []);
 
   return (
     <div
       ref={containerRef}
-      style={{ width, height }}
-      className="cursor-pointer relative"
+      style={{ width, height, touchAction: "none" }}
+      className="cursor-grab active:cursor-grabbing relative select-none"
+      onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
-      onPointerEnter={handlePointerEnter}
-      onPointerLeave={handlePointerLeave}
-      onClick={handleClick}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
     >
       <Canvas
         gl={{
@@ -183,12 +176,11 @@ export default function SorareCard3D({ width = 340, height = 550 }: SorareCard3D
         <CameraSetup />
         <SceneLighting />
         <Environment preset="studio" />
-        <CardModel mouseX={mouse.x} mouseY={mouse.y} isHovering={isHovering} flipped={flipped} />
+        <CardModel rotationX={rotation.x} rotationY={rotation.y} />
       </Canvas>
-      {/* Flip hint */}
       <div className="absolute bottom-3 left-0 right-0 flex justify-center pointer-events-none">
         <span className="text-[11px] text-white/40 tracking-wide">
-          Click to flip
+          Drag to rotate
         </span>
       </div>
     </div>
