@@ -4,6 +4,7 @@ import TopBar from "./components/Header";
 import Footer from "./components/Footer";
 import CratePage from "./pages/CratePage";
 import CardPage from "./pages/CardPage";
+import ReviewPage from "./pages/ReviewPage";
 
 // ─── Simple hash router ───
 function useHashRoute() {
@@ -37,7 +38,7 @@ const App: React.FC = () => {
         <TopBar />
       </div>
       <div className="lg:max-w-[1505px] mx-auto px-4 lg:px-8 flex flex-col flex-1 w-full">
-        {route === "/card" ? <CardPage /> : <CratePage />}
+        {route === "/review" ? <ReviewPage /> : route === "/card" ? <CardPage /> : <CratePage />}
       </div>
       <div
         className={clsx(
