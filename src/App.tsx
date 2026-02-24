@@ -1,11 +1,26 @@
+import { useState, useEffect } from "react";
 import clsx from "clsx";
 import TopBar from "./components/Header";
 import Footer from "./components/Footer";
 import CratePage from "./pages/CratePage";
+import CardPage from "./pages/CardPage";
+
+// ─── Simple hash router ───
+function useHashRoute() {
+  const [route, setRoute] = useState(window.location.hash.slice(1) || "/");
+  useEffect(() => {
+    const handler = () => setRoute(window.location.hash.slice(1) || "/");
+    window.addEventListener("hashchange", handler);
+    return () => window.removeEventListener("hashchange", handler);
+  }, []);
+  return route;
+}
 
 // ─── App layout (copied from RCM src/App.tsx) ───
 
 const App: React.FC = () => {
+  const route = useHashRoute();
+
   return (
     <div
       className={clsx(
@@ -22,7 +37,7 @@ const App: React.FC = () => {
         <TopBar />
       </div>
       <div className="lg:max-w-[1505px] mx-auto px-4 lg:px-8 flex flex-col flex-1 w-full">
-        <CratePage />
+        {route === "/card" ? <CardPage /> : <CratePage />}
       </div>
       <div
         className={clsx(
