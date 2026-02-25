@@ -1,0 +1,103 @@
+{
+  "images": [
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/fef5797eaa00488ab22d5b37fe25f346_b22478c78475424fbb60ff518404d19a.png",
+      "content_type": "image/png",
+      "file_name": "b22478c78475424fbb60ff518404d19a.png",
+      "file_size": 93333,
+      "width": 512,
+      "height": 512
+    },
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/4018e037ed4b4f7dac2ba45087456e88_c103dfd437fe4bdc90a613e92bd097f3.png",
+      "content_type": "image/png",
+      "file_name": "c103dfd437fe4bdc90a613e92bd097f3.png",
+      "file_size": 97849,
+      "width": 512,
+      "height": 512
+    },
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/ef236b6633b4409eb3dc11c0a30f138c_a01a2b16118e4e7cb107d1cf791a3bdc.png",
+      "content_type": "image/png",
+      "file_name": "a01a2b16118e4e7cb107d1cf791a3bdc.png",
+      "file_size": 108874,
+      "width": 512,
+      "height": 512
+    },
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/89a16fd5cab949b9af81c3df834d2fe5_13d24fa0d63a4e67b0caaf458b3d8eb6.png",
+      "content_type": "image/png",
+      "file_name": "13d24fa0d63a4e67b0caaf458b3d8eb6.png",
+      "file_size": 100330,
+      "width": 512,
+      "height": 512
+    },
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/965bb675fad94388940f7a648d638473_49779096d8384df8ac998814ccf28d71.png",
+      "content_type": "image/png",
+      "file_name": "49779096d8384df8ac998814ccf28d71.png",
+      "file_size": 110620,
+      "width": 512,
+      "height": 512
+    },
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/86761f5f7a384e12bc21f6eb5d1cf17a_b82ea10acd58497d8f78a9ba16b566f9.png",
+      "content_type": "image/png",
+      "file_name": "b82ea10acd58497d8f78a9ba16b566f9.png",
+      "file_size": 101030,
+      "width": 512,
+      "height": 512
+    }
+  ],
+  "normal_images": [
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/215ed8c459e842afa65dd07dceac1399_29d8c51f7ed8441e837c04bd3156a925.png",
+      "content_type": "image/png",
+      "file_name": "29d8c51f7ed8441e837c04bd3156a925.png",
+      "file_size": 88966,
+      "width": 512,
+      "height": 512
+    },
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/a59e17abedd140fe871213d88ae7f7fa_05dac1191d5a418d91bdbbec1d7512f5.png",
+      "content_type": "image/png",
+      "file_name": "05dac1191d5a418d91bdbbec1d7512f5.png",
+      "file_size": 90806,
+      "width": 512,
+      "height": 512
+    },
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/ca62f44df7d74def8d83cb1cea3854e8_4c63d65263a24dce9c7bd99ecc35e8d5.png",
+      "content_type": "image/png",
+      "file_name": "4c63d65263a24dce9c7bd99ecc35e8d5.png",
+      "file_size": 112864,
+      "width": 512,
+      "height": 512
+    },
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/06d1bb7e4af94a789573297975900547_d9d72b43c6a3464e9c6326caf93f1070.png",
+      "content_type": "image/png",
+      "file_name": "d9d72b43c6a3464e9c6326caf93f1070.png",
+      "file_size": 140485,
+      "width": 512,
+      "height": 512
+    },
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/7947a6204cfb48208a79ddf2f97087f4_6e06a9179c6c4335ae78df95731fd3fc.png",
+      "content_type": "image/png",
+      "file_name": "6e06a9179c6c4335ae78df95731fd3fc.png",
+      "file_size": 192698,
+      "width": 512,
+      "height": 512
+    },
+    {
+      "url": "https://storage.googleapis.com/isolate-dev-hot-rooster_toolkit_public_bucket/github_110602490/e9b534cb3bfc49bc83576f3a04aafa0a_29c13ba8a4534a1c96f64955fed67257.png",
+      "content_type": "image/png",
+      "file_name": "29c13ba8a4534a1c96f64955fed67257.png",
+      "file_size": 137550,
+      "width": 512,
+      "height": 512
+    }
+  ],
+  "seed": 42
+}

@@ -6,6 +6,7 @@ import CratePage from "./pages/CratePage";
 import CardPage from "./pages/CardPage";
 import ReviewPage from "./pages/ReviewPage";
 import ApolloPage from "./pages/ApolloPage";
+import GenerateLabPage from "./pages/GenerateLabPage";
 
 // ─── Simple hash router ───
 function useHashRoute() {
@@ -39,8 +40,10 @@ const App: React.FC = () => {
         <TopBar />
       </div>
       <div className="lg:max-w-[1505px] mx-auto px-4 lg:px-8 flex flex-col flex-1 w-full">
-        {route.startsWith("/apollo") ? (
-          <ApolloPage version={route.split("/")[2] || "v2"} />
+        {route === "/lab" ? (
+          <GenerateLabPage />
+        ) : route.startsWith("/apollo") ? (
+          <ApolloPage version={route.split("/")[2] || "v9"} />
         ) : route === "/review" ? (
           <ReviewPage />
         ) : route === "/card" ? (

@@ -6,7 +6,7 @@ import * as THREE from "three";
 
 /* ── Apollo Model ── */
 
-function ApolloModel({ modelPath, hovered }: { modelPath: string; hovered: boolean }) {
+function ApolloModel({ modelPath, rotating, resetKey }: { modelPath: string; rotating: boolean; resetKey: number }) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF(modelPath);
 
@@ -20,9 +20,15 @@ function ApolloModel({ modelPath, hovered }: { modelPath: string; hovered: boole
     });
   }, [scene]);
 
-  // Slow idle rotation — pause when hovered
+  // Reset model rotation
+  useEffect(() => {
+    if (resetKey === 0) return;
+    if (groupRef.current) groupRef.current.rotation.y = 0;
+  }, [resetKey]);
+
+  // Slow idle rotation
   useFrame((_, delta) => {
-    if (!groupRef.current || hovered) return;
+    if (!groupRef.current || !rotating) return;
     groupRef.current.rotation.y += delta * 0.15;
   });
 
@@ -107,13 +113,28 @@ function SceneLighting() {
   );
 }
 
+/* ── Initial camera constants ── */
+
+const INITIAL_CAMERA_POS = new THREE.Vector3(0, 0, 3.5);
+const INITIAL_TARGET = new THREE.Vector3(0, 0, 0);
+
 /* ── Zoom-to-cursor OrbitControls ── */
 
-function ZoomToCursorControls() {
+function ZoomToCursorControls({ resetKey }: { resetKey: number }) {
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const { camera, gl } = useThree();
   const mouse = useRef(new THREE.Vector2());
   const raycaster = useRef(new THREE.Raycaster());
+
+  // Reset camera + target when resetKey changes
+  useEffect(() => {
+    if (resetKey === 0) return; // skip initial mount
+    const controls = controlsRef.current;
+    if (!controls) return;
+    camera.position.copy(INITIAL_CAMERA_POS);
+    controls.target.copy(INITIAL_TARGET);
+    controls.update();
+  }, [resetKey, camera]);
 
   useEffect(() => {
     const canvas = gl.domElement;
@@ -191,6 +212,9 @@ export default function ApolloViewer3D({
   modelPath = "/assets/robots/apollo/apollo-web.glb",
 }: ApolloViewer3DProps) {
   const [hovered, setHovered] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
+  const rotating = !paused && !hovered;
 
   return (
     <div
@@ -212,10 +236,44 @@ export default function ApolloViewer3D({
         <Suspense fallback={null}>
           <SceneLighting />
           <Environment preset="studio" />
-          <ApolloModel modelPath={modelPath} hovered={hovered} />
+          <ApolloModel modelPath={modelPath} rotating={rotating} resetKey={resetKey} />
         </Suspense>
-        <ZoomToCursorControls />
+        <ZoomToCursorControls resetKey={resetKey} />
       </Canvas>
+
+      {/* Controls — top left */}
+      <div className="absolute top-3 left-3 flex gap-1.5">
+        {/* Pause / Play */}
+        <button
+          className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-black/60 transition-colors"
+          onClick={() => setPaused((p) => !p)}
+          title={paused ? "Resume rotation" : "Pause rotation"}
+        >
+          {paused ? (
+            <svg width="12" height="14" viewBox="0 0 12 14" fill="currentColor">
+              <path d="M0 0L12 7L0 14Z" />
+            </svg>
+          ) : (
+            <svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor">
+              <rect x="0" y="0" width="3" height="14" />
+              <rect x="7" y="0" width="3" height="14" />
+            </svg>
+          )}
+        </button>
+
+        {/* Reset view */}
+        <button
+          className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-black/60 transition-colors"
+          onClick={() => setResetKey((k) => k + 1)}
+          title="Reset view"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M1 1v4h4" />
+            <path d="M1 5A6 6 0 1 1 2.5 10" />
+          </svg>
+        </button>
+      </div>
+
       <div className="absolute bottom-3 left-0 right-0 flex justify-center pointer-events-none">
         <span className="text-[11px] text-white/40 tracking-wide">
           Drag to orbit &middot; Scroll to zoom on point

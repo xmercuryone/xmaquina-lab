@@ -2,6 +2,48 @@ import ApolloViewer3D from "../components/ApolloViewer3D";
 
 const VERSIONS = [
   {
+    id: "v9",
+    label: "V9 — Composite Back",
+    description:
+      "Front photo + composite back (real battery detail on Era3D body). Seed 777.",
+    path: "/assets/robots/apollo/generations/v9-seed777/apollo-web.glb",
+  },
+  {
+    id: "v7",
+    label: "V7 — Single Front (baseline)",
+    description:
+      "Single front photo, seed 777. Best single-image result.",
+    path: "/assets/robots/apollo/generations/v7-seed777/apollo-web.glb",
+  },
+  {
+    id: "tripo25",
+    label: "Tripo3D v2.5",
+    description:
+      "Different engine: Tripo3D v2.5 with HD textures + PBR. Single front photo.",
+    path: "/assets/robots/apollo/generations/tripo25/apollo.glb",
+  },
+  {
+    id: "trellis",
+    label: "Trellis",
+    description:
+      "Different engine: Microsoft Trellis — voxel-based approach. 1.5MB.",
+    path: "/assets/robots/apollo/generations/trellis/apollo.glb",
+  },
+  {
+    id: "triposr",
+    label: "TripoSR",
+    description:
+      "Different engine: TripoSR — ultra fast, geometry-only (no textures). 3.4MB.",
+    path: "/assets/robots/apollo/generations/triposr/apollo.glb",
+  },
+  {
+    id: "v8",
+    label: "V8 — Era3D Views (Rodin)",
+    description:
+      "Era3D front + back views fed into Rodin concat. No real back detail.",
+    path: "/assets/robots/apollo/generations/v8-seed777/apollo-web.glb",
+  },
+  {
     id: "v2",
     label: "V2 — Single Front Photo",
     description:
