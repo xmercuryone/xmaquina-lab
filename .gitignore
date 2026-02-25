@@ -28,3 +28,13 @@ dist-ssr
 extract/
 *.mjs
 sorare-*
+
+# 3D generation artifacts (keep only web-optimized GLBs)
+**/generations/**/response.json
+**/generations/**/generation-response.json
+**/generations/**/*-s.glb
+**/generations/v*/apollo.glb
+**/generations/bust/**/apollo-bust.glb
+**/generations/v4-*/
+**/generations/v5-*/
+**/generations/v6-*/
