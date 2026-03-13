@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    port: 5000,
+    port: 9020,
     host: true,
     allowedHosts: ['spark.local'],
   },
